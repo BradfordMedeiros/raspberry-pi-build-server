@@ -16,4 +16,4 @@ other useful commands:
 last-build-time: display last build time
 get-build-repo: list configured build repo
 get-build-frequency: list configured build frequency
-
+set-build-hook <script_path>: call a command after build has taken place (useful to do something like scp files)
