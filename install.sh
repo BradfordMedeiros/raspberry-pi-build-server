@@ -2,6 +2,7 @@
 
 apt-get install git
 mkdir /opt/raspberry-pi-build-server
+cp uninstall.sh /opt/raspberry-pi-build-server
 
 scripts=( set-build-repo get-build-repo set-build-frequency  get-build-frequency last-build-time set-build-hook )
 
