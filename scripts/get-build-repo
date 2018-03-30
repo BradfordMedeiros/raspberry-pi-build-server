@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+
+
+cat /opt/raspberry-pi-build-server/data/build-repo

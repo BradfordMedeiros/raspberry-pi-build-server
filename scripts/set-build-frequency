@@ -1,3 +1,4 @@
 #/usr/bin/env bash
 
-echo hello
+
+printf $1 > /opt/raspberry-pi-build-server/data/build-frequency
