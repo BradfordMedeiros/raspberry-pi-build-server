@@ -1,8 +1,11 @@
 #/usr/bin/env bash
 
+raspberry_path=/opt/raspberry-pi-build-server
 github_repo=$(get-build-repo)
 
-clone_directory_path=/opt/raspberry-pi-build-server/repo
+cd $raspberry_path
+
+clone_directory_path="$raspberry_path/repo"
 (
 	git clone "$github_repo" "$clone_directory_path"
         cd "$clone_directory_path"
