@@ -1,6 +1,7 @@
 #/usr/bin/env bash
 
 FREQUENCY_FILEPATH="/opt/raspberry-pi-build-server/data/build-frequency"
+BUILD_APP_FILEPATH="/opt/raspberry-pi-build-server/build-app.sh"
 
 validate_arg() {
     if [ -z $1 ]
@@ -34,22 +35,23 @@ log_frequency() {
      printf "$1" > $FREQUENCY_FILEPATH
 }
 
-#add_frequency_to_cron() {
+add_frequency_to_cron() {
+    (crontab -l ; echo "* * * * * $BUILD_APP_FILEPATH") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
+}
 
-#}
-
-#remove_frequency_from_cron() {
-
-#}
+remove_frequency_from_cron() {
+    (crontab -l ; echo "0 * * * * $BUILD_APP_FILEPATH") 2>&1 | grep -v "no crontab" | grep -v echo | sort | uniq | crontab -
+}
 
 
 validate_arg $1
 get_expression $1 "cron_expression"
 log_frequency "$cron_expression"
-#add_frequency_to_cron $cron_expression
-#log_frequency $cron_expression
+add_frequency_to_cron $cron_expression
+log_frequency $cron_expression
 
 
 
 
-#printf $1 > /opt/raspberry-pi-build-server/data/build-frequency
+
+
