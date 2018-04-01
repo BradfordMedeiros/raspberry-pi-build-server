@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+
+
+printf $1 > /opt/raspberry-pi-build-server/data/build-hook

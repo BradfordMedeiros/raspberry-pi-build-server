@@ -2,7 +2,7 @@
 
 rm -rf /opt/raspberry-pi-build-server
 
-scripts=( set-build-repo get-build-repo set-build-frequency  get-build-frequency last-build-time set-build-hook )
+scripts=( set-build-repo get-build-repo set-build-frequency  get-build-frequency last-build-time set-build-hook get-build-hook )
 
 
 for element in ${scripts[@]}
