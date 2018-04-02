@@ -11,7 +11,13 @@ validate_arg() {
     fi 
     
     case "$1" in 
-        "cron") echo "matches cron" ;;
+        "cron") 
+	  if [ -z $2 ] 
+          then
+             echo "raw cron needs second parameter"
+             exit 1
+	  fi
+        ;;
 	"daily") echo "matches daily" ;; 
 	"weekly") echo "matches weekly" ;;
         "monthly") echo "matches monthly";;
@@ -21,12 +27,11 @@ validate_arg() {
 
 
 get_expression() {    
-
     case "$1" in 
-        "cron") eval "$2='1 * * * * *'" ;;
-        "daily") eval "$2='2 * * * * *'" ;;
-	"weekly") eval "$2='3 * * * * *'";;
-        "monthly") eval "$2='4 * * * * *'";;
+        "cron") eval "$3='${2} ${BUILD_APP_FILEPATH}'" ;;
+        "daily") eval "$3='0 0 * * * ${BUILD_APP_FILEPATH}'" ;; # occurs at midnight
+	"weekly") eval "$3='0 0 * * 0 ${BUILD_APP_FILEPATH}'";; # occurs on sunday
+        "monthly") eval "$3='0 0 1 * * ${BUILD_APP_FILEPATH}'";; #occurs on first of month
     esac
 }
 
@@ -36,22 +41,20 @@ log_frequency() {
 }
 
 add_frequency_to_cron() {
-    (crontab -l ; echo "* * * * * $BUILD_APP_FILEPATH") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
+    echo "adding $1"
+    (crontab -l ; echo "$1") 2>&1 | grep -v "no crontab" | sort | uniq | crontab -
 }
 
 remove_frequency_from_cron() {
-    (crontab -l ; echo "0 * * * * $BUILD_APP_FILEPATH") 2>&1 | grep -v "no crontab" | grep -v echo | sort | uniq | crontab -
+    echo "removing $BUILD_APP_FILEPATH"
+    (crontab -l ; echo "$BUILD_APP_FILEPATH") 2>&1 | grep -v "no crontab" | grep -v "$BUILD_APP_FILEPATH" | sort | uniq | crontab -
 }
 
 
-validate_arg $1
-get_expression $1 "cron_expression"
+validate_arg $1 $2
+get_expression $1 "$2" "cron_expression"
+remove_frequency_from_cron
+log_frequency ""
+add_frequency_to_cron "$cron_expression"
 log_frequency "$cron_expression"
-add_frequency_to_cron $cron_expression
-log_frequency $cron_expression
-
-
-
-
-
 
