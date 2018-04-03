@@ -19,3 +19,6 @@ get-build-repo: list configured build repo
 get-build-frequency: list configured build frequency
 set-build-hook <script_path>: call a command after build has taken place (for decoupling, can use however, but redcommended when the actions aren't really related to the github repo the script is  hosted in).
 
+
+
+This isn't really ideal for creating verifiable builds, since you probably want a containerized solution with verifiable dependencies, but this is just meant as simple convience scripts to allow you to execute some code off of github easily. 
