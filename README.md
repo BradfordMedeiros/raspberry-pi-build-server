@@ -1,18 +1,18 @@
 # raspberry_pi_build_server
 
-Scripts that configure raspberry pi to build -- or more so run a script from github
+Scripts that configure raspberry pi to clone and call script  "build-raspberry.sh" on a schedule.  
+
 Note that the server can only be set to build one project at a time
 
-
-1. Install Raspberry Pi build server image onto SD card
+1. Install Raspberry Pi build server image onto SD card (link coming soon)
 
 2. Run command: set-build-repo <github url to  clone>.  This repo needs to have a file called build-raspberry.sh.
  You can do whatever you want in here, but I use it to build some  software and host it automatically on my pi.  
  
-This default to running a daily "build". Change this will
+This default to running a daily "build" (defaults to never)
 3. set-build-frequency <hourly/daily/weekly/never/ cron '<some raw cron expression'> 
 
-note that if a build is still occuring when the next scheduled build kicks off, the build will  simply occur on the next interval
+note that if a build is still occuring when the next scheduled build kicks off, the build will  simply occur on the next interval.  There is no locking mechanism, but it's easy enough to add one.
 
 other useful commands:
 last-build-time: display last build time
