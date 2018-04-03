@@ -1,19 +1,17 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 FREQUENCY_FILEPATH="/opt/raspberry-pi-build-server/data/build-frequency"
 BUILD_APP_FILEPATH="/opt/raspberry-pi-build-server/build-app.sh"
 
 validate_arg() {
-    if [ -z $1 ]
-    then
+    if [ -z $1 ]; then
         echo "No parameter set"
         exit 1
     fi 
     
     case "$1" in 
         "cron") 
-	  if [ -z $2 ] 
-          then
+	  if [ -z $2 ]; then
              echo "raw cron needs second parameter"
              exit 1
 	  fi
@@ -21,6 +19,7 @@ validate_arg() {
 	"daily") echo "matches daily" ;; 
 	"weekly") echo "matches weekly" ;;
         "monthly") echo "matches monthly";;
+        "never") echo "matches never" ;;
         *) echo "Invalid parameter" && exit 1;;
     esac
 }
@@ -32,6 +31,7 @@ get_expression() {
         "daily") eval "$3='0 0 * * * ${BUILD_APP_FILEPATH}'" ;; # occurs at midnight
 	"weekly") eval "$3='0 0 * * 0 ${BUILD_APP_FILEPATH}'";; # occurs on sunday
         "monthly") eval "$3='0 0 1 * * ${BUILD_APP_FILEPATH}'";; #occurs on first of month
+        "never") echo "should not have called function with never" && exit 1
     esac
 }
 
@@ -52,9 +52,16 @@ remove_frequency_from_cron() {
 
 
 validate_arg $1 $2
+
+if [ "$1" == "never" ]; then
+   remove_frequency_from_cron
+   log_frequency "never"
+   exit 0
+fi 
+
 get_expression $1 "$2" "cron_expression"
 remove_frequency_from_cron
 log_frequency ""
 add_frequency_to_cron "$cron_expression"
 log_frequency "$cron_expression"
-
+exit 0
