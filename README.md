@@ -1,4 +1,4 @@
-# raspberry_pi_build_server
+# raspberry-pi-git-job-server
 
 Scripts that configure raspberry pi to clone and call script  "build-raspberry.sh" on a schedule.  
 
