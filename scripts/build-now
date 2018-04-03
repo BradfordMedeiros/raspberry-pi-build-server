@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+
+cd /opt/raspberry-pi-build-server/
+./build-app.sh
